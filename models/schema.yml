@@ -1,4 +1,3 @@
-# schema.yml
 version: 2
 
 sources:
@@ -6,16 +5,68 @@ sources:
     database: thinking-cacao-475009-u0
     schema: gz_raw_data
     loader: bigquery
+
+    # Global Freshness Policy for ALL tables in this source
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
+
     tables:
+      # --- TABLE: sales ---
       - name: sales
         identifier: raw_gz_sales
-        loaded_at_field: updated_at
+        description: Sales of Greenweez / one row per product_id found in each orders_id
+
+        # Table-Specific Freshness Check
+        loaded_at_field: date_date
+        freshness:
+          warn_after: { count: 90, period: day }
+
+        columns:
+          # Primary Key: orders_id and product_id together form the unique key
+          - name: orders_id
+            description: Foreign key to ship. Part of the composite key.
+            tests:
+              - not_null # Only test for existence since it's not unique alone
+          - name: pdt_id
+            description: Foreign key to product. Part of the composite key.
+            tests:
+              - not_null
+
+          # Other columns
+          - name: date_date
+            description: Date of purchase
+          - name: revenue
+            description: The amount paid by the customer.
+          - name: quantity
+            description: The quantity of products purchased.
+
+      # --- TABLE: product ---
       - name: product
         identifier: raw_gz_product
-        loaded_at_field: updated_at
+        description: Products of Greenweez
+        columns:
+          - name: products_id
+            description: Primary key for the product table.
+            tests:
+              - unique
+              - not_null
+          - name: purchase_price
+            description: The purchase price of the product.
+
+      # --- TABLE: ship ---
       - name: ship
         identifier: raw_gz_ship
-        loaded_at_field: updated_at
+        description: Shipping data for Greenweez orders
+        columns:
+          - name: orders_id
+            description: Primary key for the shipping table.
+            tests:
+              - unique
+              - not_null
+          - name: shipping_fee
+            description: The price the customer pays for shipping.
+          - name: log_cost
+            description: The cost of preparing the parcel.
+          - name: ship_cost
+            description: Shipping cost paid by Greenweez to the carrier/logistics provider.
