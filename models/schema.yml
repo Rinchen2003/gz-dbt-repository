@@ -1,0 +1,21 @@
+# schema.yml
+version: 2
+
+sources:
+  - name: raw
+    database: thinking-cacao-475009-u0
+    schema: gz_raw_data
+    loader: bigquery
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        loaded_at_field: updated_at
+      - name: product
+        identifier: raw_gz_product
+        loaded_at_field: updated_at
+      - name: ship
+        identifier: raw_gz_ship
+        loaded_at_field: updated_at
