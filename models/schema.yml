@@ -6,34 +6,29 @@ sources:
     schema: gz_raw_data
     loader: bigquery
 
-    # Global Freshness Policy for ALL tables in this source
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
 
     tables:
-      # --- TABLE: sales ---
       - name: sales
         identifier: raw_gz_sales
         description: Sales of Greenweez / one row per product_id found in each orders_id
 
-        # Table-Specific Freshness Check
         loaded_at_field: date_date
         freshness:
           warn_after: { count: 90, period: day }
 
         columns:
-          # Primary Key: orders_id and product_id together form the unique key
           - name: orders_id
             description: Foreign key to ship. Part of the composite key.
             tests:
-              - not_null # Only test for existence since it's not unique alone
+              - not_null
           - name: pdt_id
             description: Foreign key to product. Part of the composite key.
             tests:
               - not_null
 
-          # Other columns
           - name: date_date
             description: Date of purchase
           - name: revenue
@@ -41,7 +36,6 @@ sources:
           - name: quantity
             description: The quantity of products purchased.
 
-      # --- TABLE: product ---
       - name: product
         identifier: raw_gz_product
         description: Products of Greenweez
@@ -54,7 +48,6 @@ sources:
           - name: purchase_price
             description: The purchase price of the product.
 
-      # --- TABLE: ship ---
       - name: ship
         identifier: raw_gz_ship
         description: Shipping data for Greenweez orders
