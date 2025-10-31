@@ -16,7 +16,7 @@ SELECT
     
     ROUND(
         o.margin + CAST(s.shipping_fee AS FLOAT64) - (CAST(s.log_cost AS FLOAT64) + CAST(s.ship_cost AS FLOAT64)), 
-    2) AS operational_margin
+    2) AS operational_margin,
     
 FROM
     {{ ref('int_orders_margin') }} AS o  
