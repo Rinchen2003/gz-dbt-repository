@@ -1,3 +1,6 @@
+{{ config(
+    alias = 'int_orders_operational' 
+) }}
 SELECT
    
     o.orders_id,
