@@ -17,7 +17,7 @@ SELECT
     ROUND(
         o.margin 
         + SAFE_CAST(s.shipping_fee AS FLOAT64) 
-        - SAFE_CAST(s.log_cost AS FLOAT64) 
+        - SAFE_CAST(s.logcost AS FLOAT64) 
         - SAFE_CAST(s.ship_cost AS FLOAT64), 
     2) AS operational_margin
     
