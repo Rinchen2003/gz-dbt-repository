@@ -9,7 +9,7 @@ SELECT
     
     
     s.shipping_fee,
-    s.log_cost,
+    s.logcost,
     s.ship_cost,
     
     
