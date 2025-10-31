@@ -5,10 +5,10 @@ with
     renamed as (
 
         select
-            orders_id,
-            shipping_fee,
-            logcost as logcost,
-            cast(ship_cost as int64) as ship_cost
+         orders_id,
+           shipping_fee,
+           logcost as logcost,
+           cast(ship_cost as int64) as ship_cost,
 
         from source
 
