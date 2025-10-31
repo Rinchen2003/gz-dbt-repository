@@ -1,6 +1,4 @@
-{{ config(
-    alias = 'int_orders_operational' 
-) }}
+
 SELECT
    
     o.orders_id,
@@ -19,7 +17,7 @@ SELECT
         o.margin 
         + SAFE_CAST(s.shipping_fee AS FLOAT64) 
         - (SAFE_CAST(s.log_cost AS FLOAT64) + SAFE_CAST(s.ship_cost AS FLOAT64)), 
-    2) AS operational_margin
+    2) AS operational_margin,
     
 FROM
     {{ref("int_orders_margin")}} AS o 
