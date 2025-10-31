@@ -4,12 +4,12 @@ SELECT
     t1.products_id,
     t1.quantity,
     t1.revenue,
-    t2.purchse_price,  -- Leaving the misspelling as per your instruction
+    t2.purchse_price,  
 
-    -- FIX 1: Ensure Purchase Cost is cast to FLOAT64 for math
+    
     CAST(t1.quantity AS INT64) * CAST(t2.purchse_price AS FLOAT64) AS purchase_cost,
 
-    -- FIX 2: Ensure the second calculation uses the casted value
+    
     t1.revenue - (CAST(t1.quantity AS INT64) * CAST(t2.purchse_price AS FLOAT64)) AS margin
 
 FROM 
