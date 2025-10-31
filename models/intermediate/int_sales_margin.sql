@@ -1,15 +1,19 @@
-select
-
+SELECT
+    t1.date_date,
+    t1.orders_id,
+    t1.products_id,
     t1.quantity,
-
-    t2.purchse_price,
-
     t1.revenue,
+    t2.purchse_price,  -- Leaving the misspelling as per your instruction
 
-    cast(t1.quantity as int64) * t2.purchase_price as purchase_cost,
+    -- FIX 1: Ensure Purchase Cost is cast to FLOAT64 for math
+    CAST(t1.quantity AS INT64) * CAST(t2.purchse_price AS FLOAT64) AS purchase_cost,
 
-    t1.revenue - (cast(t1.quantity as int64) * t2.purchase_price) as margin,
+    -- FIX 2: Ensure the second calculation uses the casted value
+    t1.revenue - (CAST(t1.quantity AS INT64) * CAST(t2.purchse_price AS FLOAT64)) AS margin
 
-from {{ ref("stg_raw__sales") }} as t1
-
-inner join {{ ref("stg_raw__product") }} as t2 on t1.products_id = t2.products_id
+FROM 
+    {{ ref('stg_raw__sales') }} AS t1
+INNER JOIN 
+    {{ ref('stg_raw__product') }} AS t2 
+    ON t1.products_id = t2.products_id
