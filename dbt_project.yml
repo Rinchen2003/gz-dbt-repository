@@ -9,6 +9,6 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 
 models:
-  # This block should be clean, containing only your repository name
+  
   gz_dbt_repository:
     +materialized: table
