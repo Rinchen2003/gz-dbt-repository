@@ -10,5 +10,5 @@ macro-paths: ["macros"]
 
 models:
   gz_dbt_repository:
-  mart:
-    +materialized: table
+    mart:
+      +materialized: table
