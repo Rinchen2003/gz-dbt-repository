@@ -1,0 +1,65 @@
+version: 2
+
+sources:
+  - name: raw
+    database: thinking-cacao-475009-u0
+    schema: gz_raw_data
+    loader: bigquery
+
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        description: Sales of Greenweez / one row per product_id found in each orders_id
+
+        loaded_at_field: date_date
+        freshness:
+          warn_after: { count: 90, period: day }
+
+        columns:
+          - name: orders_id
+            description: Foreign key to ship. Part of the composite key.
+            tests:
+              - not_null
+          - name: pdt_id
+            description: Foreign key to product. Part of the composite key.
+            tests:
+              - not_null
+
+          - name: date_date
+            description: Date of purchase
+          - name: revenue
+            description: The amount paid by the customer.
+          - name: quantity
+            description: The quantity of products purchased.
+
+      - name: product
+        identifier: raw_gz_product
+        description: Products of Greenweez
+        columns:
+          - name: products_id
+            description: Primary key for the product table.
+            tests:
+              - unique
+              - not_null
+          - name: purchase_price
+            description: The purchase price of the product.
+
+      - name: ship
+        identifier: raw_gz_ship
+        description: Shipping data for Greenweez orders
+        columns:
+          - name: orders_id
+            description: Primary key for the shipping table.
+            tests:
+              - unique
+              - not_null
+          - name: shipping_fee
+            description: The price the customer pays for shipping.
+          - name: log_cost
+            description: The cost of preparing the parcel.
+          - name: ship_cost
+            description: Shipping cost paid by Greenweez to the carrier/logistics provider.
