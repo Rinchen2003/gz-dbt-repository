@@ -1,4 +1,4 @@
-{{config(materilized = 'table')}}
+
 
 
 WITH orders_per_day AS (
